@@ -74,7 +74,6 @@ class EventQueue(Queue, object):
 
     # executes callbacks on dedicated thread as a daemon
     def worker(self):
-        is_running_lock.acquire()
         while self.running:
             hook = self.get()
             try:
@@ -82,7 +81,6 @@ class EventQueue(Queue, object):
             except Exception as ex:
                 logging.debug(ex.message)
             self.task_done()
-        is_running_lock.release()
         logging.debug("closing thread...")
 
     def notifier(self):
