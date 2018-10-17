@@ -74,10 +74,11 @@ class EventQueue(Queue, object):
 
     # executes callbacks on dedicated thread as a daemon
     def worker(self):
-        print ('Self2: ' + str(self))
+        print ('##################Self2: ' + str(self))
         while self.running:
-            print ('Self: ' + str(self))
+            print ('!!!!!!!!!!!!!!!!!!!!!!!!!!!!Self: ' + str(self))
             hook = self.get()
+            print ('@@@@@@@@@@@@@@@@@@@@@@@Hook: ' + str(hook))
             try:
                 hook.execute()
             except Exception as ex:
