@@ -14,6 +14,7 @@ from ...core.events.types import HuntFinished
 global is_running_lock
 is_running_lock = Lock()
 
+
 # Inherits Queue object, handles events asynchronously
 class EventQueue(Queue, object):
     def __init__(self, num_worker=10):
@@ -36,14 +37,14 @@ class EventQueue(Queue, object):
         t.daemon = True
         t.start()
 
-
     # decorator wrapping for easy subscription
     def subscribe(self, event, hook=None, predicate=None):
         def wrapper(hook):
             self.subscribe_event(event, hook=hook, predicate=predicate)
             return hook
+
         return wrapper
-    
+
     # getting uninstantiated event object
     def subscribe_event(self, event, hook=None, predicate=None):
         if ActiveHunter in hook.__mro__:
@@ -85,7 +86,7 @@ class EventQueue(Queue, object):
         logging.debug("closing thread...")
 
     def notifier(self):
-        time.sleep(2)        
+        time.sleep(2)
         while self.unfinished_tasks > 0:
             logging.debug("{} tasks left".format(self.unfinished_tasks))
             time.sleep(3)
