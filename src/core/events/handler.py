@@ -15,6 +15,7 @@ global queue_lock
 queue_lock = Lock()
 
 
+
 # Inherits Queue object, handles events asynchronously
 class EventQueue(Queue, object):
     def __init__(self, num_worker=10):
