@@ -79,9 +79,12 @@ class PlainReporter(object):
 
         vulnerabilities_lock.acquire()
         for vuln in vulnerabilities:
+            print ('VULN.HOST:\n\n\n\n' + str(vuln.host))
+            print ('VULN.port:\n\n\n\n' + str(vuln.port))
             row = ["{}:{}".format(vuln.host, vuln.port) if vuln.host else "", vuln.category.name, vuln.get_name(), vuln.explain()]
             evidence = str(vuln.evidence)[:EVIDENCE_PREVIEW] + "..." if len(str(vuln.evidence)) > EVIDENCE_PREVIEW else str(vuln.evidence)
             row.append(evidence)
             vuln_table.add_row(row)
+        ret_vuln_table = "\nVulnerabilities\n{}\n".format(vuln_table)
         vulnerabilities_lock.release()
-        return "\nVulnerabilities\n{}\n".format(vuln_table)
+        return ret_vuln_table
