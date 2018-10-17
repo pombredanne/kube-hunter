@@ -76,9 +76,14 @@ class EventQueue(Queue, object):
     def worker(self):
         print ('##################Self2: ' + str(self))
         while self.running:
-            print ('!!!!!!!!!!!!!!!!!!!!!!!!!!!!Self: ' + str(self))
-            hook = self.get()
-            print ('@@@@@@@@@@@@@@@@@@@@@@@Hook: ' + str(hook))
+            try:
+                print ('Self: ' + str(self))
+                hook = self.get()
+                print ('Hook: ' + str(hook))
+            except:
+                import traceback
+                print ("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+                traceback.print_exc()
             try:
                 hook.execute()
             except Exception as ex:
