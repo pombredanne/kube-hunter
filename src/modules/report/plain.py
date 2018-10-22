@@ -70,6 +70,7 @@ class PlainReporter(object):
         services_lock.release()
         return detected_services_ret
 
+
     def vulns_table(self):
         column_names = ["Location", "Category", "Vulnerability", "Description", "Evidence"]
         vuln_table = PrettyTable(column_names, hrules=ALL)
