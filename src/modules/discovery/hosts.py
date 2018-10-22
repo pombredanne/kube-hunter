@@ -15,6 +15,7 @@ from ...core.events import handler
 from ...core.events.types import Event, NewHostEvent, Vulnerability
 from ...core.types import Hunter, InformationDisclosure, Azure
 
+
 class RunningAsPodEvent(Event):
     def __init__(self):
         self.name = 'Running from within a pod'
