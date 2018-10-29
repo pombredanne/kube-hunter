@@ -41,14 +41,22 @@ class InstallPackagesHunter(ActiveHunter):
     def attempt_to_install_packages_system_wide(self):
         logging.debug(self.event.host)
         logging.debug('Passive Hunter is attempting to install portable apps')
+        res1, res2 = False
         # get all files and subdirectories files:
-        res1 = commands.getstatusoutput('apt-get install') if commands.getstatusoutput('apt-get install 2> error.txt | cat error.txt') == '' else False
-        res2 = commands.getstatusoutput('sudo apt-get install') if commands.getstatusoutput('sudo apt-get install 2> error.txt | cat error.txt') == '' else False
-        self.is_root = res1 or res2
+        if self.is_root:
+            res1 = commands.getstatusoutput('apt-get install') if commands.getstatusoutput('apt-get install 2> error.txt | cat error.txt') == '' else False
+        else:
+            res2 = commands.getstatusoutput('sudo apt-get install') if commands.getstatusoutput('sudo apt-get install 2> error.txt | cat error.txt') == '' else False
+        return res1 or '[sudo] password for' not in res2  #  If that string is in res2 it means we were asked for password we dont know and we couldnt install any tools..
+
+    def is_privileged_pod(self):
+        self.is_root = commands.getstatusoutput('id-u') == '0'
         return self.is_root
 
     def execute(self):
+        if self.is_privileged_pod():
+            self.publish_event(PrivilegedPod(self.is_root))
+
         if self.attempt_to_install_packages_system_wide():
             self.publish_event(InstallPackages(self.packages_installation_available))
-            self.publish_event(PrivilegedPod(self.is_root))
 
