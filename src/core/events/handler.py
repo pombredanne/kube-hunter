@@ -80,6 +80,8 @@ class EventQueue(Queue, object):
                 hook.execute()
             except Exception as ex:
                 logging.debug(ex.message)
+                import traceback
+                traceback.print_exc()
             self.task_done()
         logging.debug("closing thread...")
 
